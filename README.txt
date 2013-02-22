@@ -12,13 +12,16 @@ install
 use
 ---
 
-Create a `Vari` object with one of many color representations:
+Create a `Vari` instance with one of many color representations:
 
-    color = Vari(rgb=(255, 0, 0))
+    Vari(rgb=(255, 0, 0))
+    Vari('#ff0000')
 
-Ask the object for other representations:
+Ask the instance for other representations:
 
-    color.rgb  # (255, 0, 0)
+    c = Vari('#f00')
+    c.rgb  # (255, 0, 0)
+    c.hex  # '#ff0000'
 
 acknowledgements
 ----------------
@@ -28,7 +31,6 @@ The search from rgb to x256 is a python port of [node-x256][node-x256] (MIT lice
 future
 ------
 
-- hex repr
 - python port of substack/node-x256 for terminal colors
 - human readable CSS web color list
 - hsl repr

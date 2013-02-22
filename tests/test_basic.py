@@ -22,12 +22,15 @@ class VariTestSuite(unittest.TestCase):
         red = vari.Vari('#f00')
         self.assertEqual(self.red, red)
 
+    def test_nameload(self):
+        red = vari.Vari('red')
+        self.assertEqual(self.red, red)
+
     def test_2rgb(self):
         self.assertEqual((255, 0, 0), self.red.rgb)
 
     def test_2hex(self):
         self.assertEqual('#ff0000', self.red.hex)
-
 
 
 if __name__ == '__main__':
