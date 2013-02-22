@@ -28,37 +28,30 @@ class Vari(object):
     def __init__(self, color=None, **kwargs):
 
         self._rgb = None  # internal repr
-
-        if color:
-
-            # handle hex
-            if color.startswith('#'):
-                if HEX_COLOR.match(color):
-                    self.hex = color
-                elif HEX_COLOR_SHORT.match(color):
-                    self.hex_short = color
-
-            # TODO handle web
-
-        for k, v in kwargs.iteritems():
-            setattr(self, k, v)
+        self.update(color, **kwargs)
 
         # if we've not set self._rgb, we couldn't init the color
         if not self._rgb:
             raise ValueError('cannot initialize Vari instance')
 
-    def __getattr__(self, label):
-        if ('get_' + label) in self.__class__.__dict__:
-            return getattr(self, 'get_' + label)()
-        else:
-            raise AttributeError("'%s' not an attribute" % label)
+    def update(self, color, **kwargs):
 
-    def __setattr__(self, label, value):
-        if label == '_rgb':
-            self.__dict__[label] = value
-        else:
-            fnc = getattr(self, 'set_' + label)
-            fnc(value)
+        # handle kwargs[rgb]
+        if 'rgb' in kwargs:
+            self._rgb = kwargs['rgb']
+
+        elif color:
+
+            # handle hex
+            if color.startswith('#'):
+                if HEX_COLOR.match(color):
+                    self._rgb = hex2rgb(color)
+                elif HEX_COLOR_SHORT.match(color):
+                    clr = '#' + ''.join(['%s%s' % (e,e) for e in color[1:]])
+                    self._rgb = hex2rgb(clr)
+
+            # TODO handle web
+
 
     def __eq__(self, other):
         return self._rgb == other._rgb
@@ -66,25 +59,17 @@ class Vari(object):
     def __repr__(self):
         return '<Vari rgb=%s>' % self.hex
 
-    def get_rgb(self):
+    @property
+    def rgb(self):
         return self._rgb
 
-    def get_hex(self):
-        return rgb2hex(self._rgb)
-
-    def set_rgb(self, rgb):
+    @rgb.setter
+    def rgb(self, rgb):
         self._rgb = rgb
 
-    def set_hex(self, clr):
-        self._rgb = hex2rgb(clr)
-
-    def set_hex_short(self, clr):
-        clr = '#' + ''.join(['%s%s' % (e,e) for e in clr[1:]])
-        self._rgb = hex2rgb(clr)
-
-
-def main(args):
-    pass
+    @property
+    def hex(self):
+        return rgb2hex(self._rgb)
 
 
 def cli():

@@ -14,15 +14,15 @@ class VariTestSuite(unittest.TestCase):
         red = vari.Vari(rgb=(255, 0, 0))
         self.assertEqual(self.red, red)
 
-    def test_hexload(self):
+    def test_load_hex(self):
         red = vari.Vari('#ff0000')
         self.assertEqual(self.red, red)
 
-    def test_short_hexload(self):
+    def test_load_hex_short(self):
         red = vari.Vari('#f00')
         self.assertEqual(self.red, red)
 
-    def test_nameload(self):
+    def test_load_name(self):
         red = vari.Vari('red')
         self.assertEqual(self.red, red)
 
@@ -31,6 +31,9 @@ class VariTestSuite(unittest.TestCase):
 
     def test_2hex(self):
         self.assertEqual('#ff0000', self.red.hex)
+
+    def test_2web(self):
+        self.assertEqual('red', self.red.web)
 
 
 if __name__ == '__main__':
