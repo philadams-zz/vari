@@ -10,7 +10,10 @@ class VariTestSuite(unittest.TestCase):
     def setUp(self):
         self.red = vari.Vari(rgb=(255, 0, 0))
 
-    def test_color_instance_comparison(self):
+    def test_vari_repr(self):
+        self.assertEqual(repr(self.red), '<Vari #ff0000>')
+
+    def test_vari_instance_comparison(self):
         red = vari.Vari(rgb=(255, 0, 0))
         self.assertEqual(self.red, red)
 

@@ -9,6 +9,9 @@ Color representation conversions in Python.
 
 import re
 
+from helpers import COLORS_NAMES
+
+COLORS_RGB = dict((v, k) for k, v in COLORS_NAMES.iteritems())
 HEX_COLOR = re.compile(r'^#[0-9a-fA-F]{6}')
 HEX_COLOR_SHORT = re.compile(r'^#[0-9a-fA-F]{3}')
 
@@ -38,7 +41,7 @@ class Vari(object):
 
         # handle kwargs[rgb]
         if 'rgb' in kwargs:
-            self._rgb = kwargs['rgb']
+            self._rgb = tuple(map(int, kwargs['rgb']))
 
         elif color:
 
@@ -50,14 +53,16 @@ class Vari(object):
                     clr = '#' + ''.join(['%s%s' % (e,e) for e in color[1:]])
                     self._rgb = hex2rgb(clr)
 
-            # TODO handle web
+            # handle web
+            elif color in COLORS_NAMES:
+                self._rgb = COLORS_NAMES[color]
 
 
     def __eq__(self, other):
         return self._rgb == other._rgb
 
     def __repr__(self):
-        return '<Vari rgb=%s>' % self.hex
+        return '<Vari %s>' % self.hex
 
     @property
     def rgb(self):
@@ -71,6 +76,9 @@ class Vari(object):
     def hex(self):
         return rgb2hex(self._rgb)
 
+    @property
+    def web(self):
+        return COLORS_RGB.get(self._rgb, self.hex)
 
 def cli():
     import argparse
