@@ -17,11 +17,36 @@ HEX_COLOR_SHORT = re.compile(r'^#[0-9a-fA-F]{3}')
 
 
 def rgb2hex(clr):
+    """Convert rgb to hex values.
+    - (r,g,b) where each value is 0..255
+    - RRGGBB where each value is 00..FF"""
     return '#' + ''.join(map(chr, clr)).encode('hex')
 
 
 def hex2rgb(clr):
+    """Convert hex to rgb values.
+    - (r,g,b) where each value is 0..255
+    - RRGGBB where each value is 00..FF"""
     return tuple(map(ord, clr[1:].decode('hex')))
+
+
+def rgb2x256(clr):
+    """convert rgb to x256 8-bit color
+    - (r,g,b) where each value is 0..255
+    - 256 colors in 8 bits RRRGGGBB, returned as single int 0..255"""
+    r, g, b = clr
+    grey = False
+    maybe_gray = True
+    for i in range(3, 256, 42):
+        if r <= i or g <= i or b <= i:
+            grey = r <= i and g <= i and b <= i
+            break
+    if grey:
+        color = 232 + int(sum(clr) / 33.0)
+    else:
+        components = ((r, 36), (g, 6), (b, 1))
+        color = sum([16] + [int(6*val/256.0)*bmp for val, bmp in components])
+    return color
 
 
 class Vari(object):
@@ -79,6 +104,10 @@ class Vari(object):
     @property
     def web(self):
         return COLORS_RGB.get(self._rgb, self.hex)
+
+    @property
+    def x256(self):
+        return rgb2x256(self._rgb)
 
 def cli():
     import argparse

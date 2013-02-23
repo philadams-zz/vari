@@ -38,6 +38,9 @@ class VariTestSuite(unittest.TestCase):
     def test_2web(self):
         self.assertEqual('red', self.red.web)
 
+    def test_2x256(self):
+        self.assertEqual(196, self.red.x256)
+
 
 if __name__ == '__main__':
     unittest.main()
