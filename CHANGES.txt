@@ -1,1 +1,2 @@
 v0.0.1, 2013-02-22 -- RGB and HEX representations.
+v0.0.2, 2013-02-22 -- Add ansi x256 8-bit color repr.
